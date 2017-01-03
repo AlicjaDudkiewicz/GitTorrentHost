@@ -13,6 +13,6 @@ public class TestHost2
         HostDispatcher dispatcherHost= new HostDispatcher(new MainWindowController());
         dispatcherHost.connectToServer("localhost",21370);
         Request request= new FileListUploadRequest();
-        dispatcherHost.sendRequest(request);
+        dispatcherHost.sendRequestToServer(request);
     }
 }

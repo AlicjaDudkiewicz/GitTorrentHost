@@ -8,7 +8,6 @@ import java.net.Socket;
 import controllers.RequestController;
 import messages.Request;
 import messages.Response;
-import views.MainWindowController;
 
 
 public class HostClientSocketThread implements Runnable
@@ -19,8 +18,6 @@ public class HostClientSocketThread implements Runnable
     public HostClientSocketThread(Socket clientSocket)
     {
         this.socket = clientSocket;
-      
-       
     }
 
     public void run()

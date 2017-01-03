@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import messages.FilesListRequest;
+import messages.Request;
 import model.FileInstance;
 import model.Host;
 import sockets.HostDispatcher;
@@ -59,7 +60,7 @@ public class MainWindowController
     @FXML
     void downloadButtonClicked(ActionEvent event)
     {
-
+        dispatcher.sendRequestToHost("localhost",2137,new Request());
     }
 
     @FXML
@@ -71,7 +72,7 @@ public class MainWindowController
     @FXML
     void refreshButtonClicked(ActionEvent event)
     {
-        dispatcher.sendRequest(new FilesListRequest());
+        dispatcher.sendRequestToServer(new FilesListRequest());
     }
     
     public void refreshFilesList(ArrayList<FileInstance> fileList)

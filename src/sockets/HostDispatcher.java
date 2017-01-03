@@ -6,14 +6,13 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import controllers.HostConnectionHandler;
 import messages.Request;
 import messages.Response;
 import views.MainWindowController;
 
 public class HostDispatcher
 {
-    private ServerSocket serverSocket;
-    private Socket socketForClient;
     private Socket clientSocket;
     private MainWindowController viewController;
 
@@ -34,7 +33,6 @@ public class HostDispatcher
         } catch (IOException e)
         {
             e.printStackTrace();
-
         }
         while (true)
         {
@@ -49,6 +47,18 @@ public class HostDispatcher
         }
     }
 
+    public void sendRequestToHost(String ip, int port, Request request)
+    {
+        try
+        {
+            new Thread(new HostConnectionHandler(ip, port, request)).start();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void connectToServer(String host, int port)
     {
         try
@@ -60,10 +70,8 @@ public class HostDispatcher
         }
     }
 
-    public void sendRequest(Request request)
-
+    public void sendRequestToServer(Request request)
     {
-
         try
         {
             ObjectOutputStream oos = new ObjectOutputStream(
@@ -74,22 +82,29 @@ public class HostDispatcher
                     clientSocket.getInputStream());
             try
             {
-
                 Response response = (Response) ois.readObject();
                 System.out.println(response.getStatus());
-
-            } catch (ClassNotFoundException e)
+            } catch (Exception e)
             {
                 e.printStackTrace();
             }
-            oos.close();
-            ois.close();
-            clientSocket.close();
         } catch (IOException e)
         {
             e.printStackTrace();
         }
 
+    }
+
+    public void closeServerConnection()
+    {
+        try
+        {
+            clientSocket.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("Connection was already closed");
+        }
     }
 
 }

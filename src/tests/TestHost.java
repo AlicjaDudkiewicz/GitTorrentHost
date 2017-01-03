@@ -17,7 +17,7 @@ public class TestHost extends Application
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader fl = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
+        FXMLLoader fl = new FXMLLoader(getClass().getResource("../views/mainWindow.fxml"));
         Parent root = fl.load();
         primaryStage.setTitle("GitTorrent");
         primaryStage.setScene(new Scene(root, 900, 550));
@@ -25,8 +25,5 @@ public class TestHost extends Application
         
         HostDispatcher dispatcherHost= new HostDispatcher(fl.getController());
         dispatcherHost.connectToServer("localhost",21370);        
-        //Request request= new FileListUploadRequest();
-        //dispatcherHost.sendRequest(request);
-
     }
 }
