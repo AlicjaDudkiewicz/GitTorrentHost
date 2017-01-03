@@ -1,4 +1,4 @@
-package host;
+package views;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import messages.FilesListRequest;
 import model.FileInstance;
 import model.Host;
+import sockets.DispatcherHost;
 
 public class MainWindowController
 {

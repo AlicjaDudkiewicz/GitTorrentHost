@@ -2,12 +2,12 @@ package controllers;
 
 import java.util.ArrayList;
 
-import host.MainWindowController;
 import messages.FilesListResponse;
 import messages.HostListResponse;
 import messages.Response;
 import model.FileInstance;
 import model.Host;
+import views.MainWindowController;
 
 public class ResponseController
 {

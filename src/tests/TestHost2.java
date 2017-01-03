@@ -1,9 +1,9 @@
 package tests;
 
-import host.DispatcherHost;
-import host.MainWindowController;
 import messages.FileListUploadRequest;
 import messages.Request;
+import sockets.DispatcherHost;
+import views.MainWindowController;
 
 public class TestHost2
 {

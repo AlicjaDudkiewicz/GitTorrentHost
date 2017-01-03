@@ -1,4 +1,4 @@
-package host;
+package sockets;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,7 +8,7 @@ import java.net.Socket;
 
 import messages.Request;
 import messages.Response;
-import sockets.HostClientSocketThread;
+import views.MainWindowController;
 
 public class DispatcherHost
 {

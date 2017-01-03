@@ -1,11 +1,11 @@
 package tests;
 
-import host.DispatcherHost;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sockets.DispatcherHost;
 
 
 public class TestHost extends Application

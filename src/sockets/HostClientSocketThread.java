@@ -6,10 +6,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import controllers.RequestController;
-import host.DispatcherHost;
-import host.MainWindowController;
 import messages.Request;
 import messages.Response;
+import views.MainWindowController;
 
 
 public class HostClientSocketThread implements Runnable
