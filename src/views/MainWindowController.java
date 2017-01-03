@@ -14,11 +14,11 @@ import javafx.scene.control.TableView;
 import messages.FilesListRequest;
 import model.FileInstance;
 import model.Host;
-import sockets.DispatcherHost;
+import sockets.HostDispatcher;
 
 public class MainWindowController
 {
-    private DispatcherHost dispatcher;
+    private HostDispatcher dispatcher;
 
     @FXML
     private ResourceBundle resources;
@@ -108,7 +108,7 @@ public class MainWindowController
         
     }
 
-    public void setDispatcher(DispatcherHost dispatcherHost)
+    public void setDispatcher(HostDispatcher dispatcherHost)
     {
         this.dispatcher = dispatcherHost;
     }

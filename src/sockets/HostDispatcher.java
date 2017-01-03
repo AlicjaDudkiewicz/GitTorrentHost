@@ -10,14 +10,14 @@ import messages.Request;
 import messages.Response;
 import views.MainWindowController;
 
-public class DispatcherHost
+public class HostDispatcher
 {
     private ServerSocket serverSocket;
     private Socket socketForClient;
     private Socket clientSocket;
     private MainWindowController viewController;
 
-    public DispatcherHost(MainWindowController viewController)
+    public HostDispatcher(MainWindowController viewController)
     {
         this.viewController = viewController;
         this.viewController.setDispatcher(this);
@@ -30,7 +30,7 @@ public class DispatcherHost
 
         try
         {
-            serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(port); 
         } catch (IOException e)
         {
             e.printStackTrace();

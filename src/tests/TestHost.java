@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sockets.DispatcherHost;
+import sockets.HostDispatcher;
 
 
 public class TestHost extends Application
@@ -23,7 +23,7 @@ public class TestHost extends Application
         primaryStage.setScene(new Scene(root, 900, 550));
         primaryStage.show();
         
-        DispatcherHost dispatcherHost= new DispatcherHost(fl.getController());
+        HostDispatcher dispatcherHost= new HostDispatcher(fl.getController());
         dispatcherHost.connectToServer("localhost",21370);        
         //Request request= new FileListUploadRequest();
         //dispatcherHost.sendRequest(request);
