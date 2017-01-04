@@ -8,11 +8,11 @@ public class FilePartRequest extends Request
     private long partStartByte;
     private long partFileSize;
 
-    public FilePartRequest(FileInstance fileInstance, long partStartByte, long partFileSize)
+    public FilePartRequest(FileInstance fileInstance, long partStartByte, long filePartSize)
     {
         this.fileInstance = fileInstance;
         this.partStartByte = partStartByte;
-        this.partFileSize = partFileSize;
+        this.partFileSize = filePartSize;
     }
 
     public FileInstance getFileInstance()

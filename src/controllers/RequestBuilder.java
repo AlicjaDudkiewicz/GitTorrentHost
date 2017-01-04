@@ -1,8 +1,11 @@
 package controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
-
 import messages.FilePartRequest;
+import messages.FilePartResponse;
 import model.FileInstance;
 import model.Host;
 
@@ -19,12 +22,13 @@ public class RequestBuilder
         for(int i=0; i<hostsAmount; i++)
         {   
             
-//            FilePartRequest request= new FilePartRequest(fileInstance,startByte);
-//            request.setPartStartByte(startByte);
-//            request.setPartFileSize(partSize);
-//            startByte=startByte+partSize;
-//            partFileRequests.add(request);
+            FilePartRequest request= new FilePartRequest(fileInstance,startByte,partSize);
+            request.setPartStartByte(startByte);
+            request.setPartFileSize(partSize);
+            startByte=startByte+partSize;
+            partFileRequests.add(request);
         }
         return partFileRequests;
     }
+    
 }
