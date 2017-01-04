@@ -8,9 +8,6 @@ import java.net.Socket;
 import messages.Request;
 import messages.Response;
 
-/**
- * Created by User on 2017-01-03.
- */
 public class HostConnectionHandler implements Runnable
 {
     private Socket connectionSocket;
@@ -55,7 +52,7 @@ public class HostConnectionHandler implements Runnable
         }
         catch (IOException e)
         {
-            //socket was already closed
+           
         }
     }
 

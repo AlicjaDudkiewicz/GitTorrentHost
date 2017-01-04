@@ -9,13 +9,12 @@ import model.FileInstance;
 import model.Host;
 import views.MainWindowController;
 
-public class ResponseController
+public class MainServerResponseController
 {
     private MainWindowController viewController;
 
     public void serveResponse(Response response)
     {
-        // MainWindowController controller = null;
         if (response instanceof FilesListResponse)
         {
             ArrayList<FileInstance> filesList = ((FilesListResponse) response)

@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import controllers.RequestController;
 import messages.Request;
 import messages.Response;
 
@@ -13,7 +12,6 @@ import messages.Response;
 public class HostClientSocketThread implements Runnable
 {
     private Socket socket;
-    private RequestController requestController= new RequestController();
     
     public HostClientSocketThread(Socket clientSocket)
     {
@@ -48,7 +46,7 @@ public class HostClientSocketThread implements Runnable
                     return;
                 } else
                 {
-                    response=requestController.serveRequest(request);
+                   // response=requestController.serveRequest(request);
                     ous.writeObject(response);
                     ous.flush();
                 }
