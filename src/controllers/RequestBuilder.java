@@ -19,11 +19,11 @@ public class RequestBuilder
         for(int i=0; i<hostsAmount; i++)
         {   
             
-            FilePartRequest request= new FilePartRequest(fileInstance,startByte);
-            request.setPartStartByte(startByte);
-            request.setPartFileSize(partSize);
-            startByte=startByte+partSize;
-            partFileRequests.add(request);
+//            FilePartRequest request= new FilePartRequest(fileInstance,startByte);
+//            request.setPartStartByte(startByte);
+//            request.setPartFileSize(partSize);
+//            startByte=startByte+partSize;
+//            partFileRequests.add(request);
         }
         return partFileRequests;
     }

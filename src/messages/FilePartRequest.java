@@ -1,9 +1,5 @@
 package messages;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.RandomAccessFile;
-
 import model.FileInstance;
 
 public class FilePartRequest extends Request
@@ -12,10 +8,11 @@ public class FilePartRequest extends Request
     private long partStartByte;
     private long partFileSize;
 
-    public FilePartRequest(FileInstance fileInstance, long partStartByte)
+    public FilePartRequest(FileInstance fileInstance, long partStartByte, long partFileSize)
     {
         this.fileInstance = fileInstance;
         this.partStartByte = partStartByte;
+        this.partFileSize = partFileSize;
     }
 
     public FileInstance getFileInstance()

@@ -24,24 +24,28 @@ public class ResponseBuilder
 
         String fileName = fileInstance.getName();
 
-        File fileToSend = new File(pathToDirectory + "/" + fileName);
+        //File fileToSend = new File(pathToDirectory + "/" + fileName);
+        File fileToSend = new File("C:/s.txt");
+
         try
         {
             RandomAccessFile randomAccessFile = new RandomAccessFile(fileToSend,
-                    "w");
-            while (distance >= 0)
+                    "r");
+            while (distance > 0)
             {
 
                 FilePartResponse filePartResponse = new FilePartResponse();
                 filePartResponse.setFileInstance(fileInstance);
                 filePartResponse.setStartByte(partStartByte);
+
+                randomAccessFile.seek(partStartByte);
                 if (distance >= BYTE_ARRAY_SIZE)
                 {
                     byte[] filePartData = new byte[BYTE_ARRAY_SIZE];
                     try
                     {
                         randomAccessFile.read(filePartData,
-                                Math.toIntExact(partStartByte),
+                                0,
                                 BYTE_ARRAY_SIZE);
                         distance = distance - BYTE_ARRAY_SIZE;
                         partStartByte = partStartByte + BYTE_ARRAY_SIZE;
@@ -54,12 +58,20 @@ public class ResponseBuilder
                 } else
                 {
                     byte[] filePartData = new byte[Math.toIntExact(distance)];
+                    randomAccessFile.read(filePartData,
+                            0,
+                            Math.toIntExact(distance));
+                    distance=0;
                     filePartResponse.setFilePartData(filePartData);
                 }
                 filePartResponses.add(filePartResponse);
 
             }
         } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
