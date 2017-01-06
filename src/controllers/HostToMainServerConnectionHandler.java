@@ -1,4 +1,4 @@
-package sockets;
+package controllers;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,11 +9,11 @@ import messages.Request;
 import messages.Response;
 
 
-public class HostClientSocketThread implements Runnable
+public class HostToMainServerConnectionHandler implements Runnable
 {
     private Socket socket;
     
-    public HostClientSocketThread(Socket clientSocket)
+    public HostToMainServerConnectionHandler(Socket clientSocket)
     {
         this.socket = clientSocket;
     }
@@ -46,7 +46,7 @@ public class HostClientSocketThread implements Runnable
                     return;
                 } else
                 {
-                   // response=requestController.serveRequest(request);
+                    //response=requestController.serveRequest(request);
                     ous.writeObject(response);
                     ous.flush();
                 }

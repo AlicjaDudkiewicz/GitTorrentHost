@@ -8,14 +8,15 @@ import java.net.Socket;
 import messages.Request;
 import messages.Response;
 
-public class HostConnectionHandler implements Runnable
+public class HostToHostConnectionHandler implements Runnable
 {
     private Socket connectionSocket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private Request requestToSend;
 
-    public HostConnectionHandler(String ip, int port, Request request) throws IOException
+
+    public HostToHostConnectionHandler(String ip, int port, Request request) throws IOException
     {
         connectionSocket = new Socket(ip,port);
         input = new ObjectInputStream(connectionSocket.getInputStream());
@@ -40,7 +41,6 @@ public class HostConnectionHandler implements Runnable
         {
             //connection was closed
             tryCloseSocket();
-            System.out.println("huj zamkłem sie");
         }
     }
 
@@ -52,13 +52,12 @@ public class HostConnectionHandler implements Runnable
         }
         catch (IOException e)
         {
-           
+           //socket was already closed, so no need to close it again
         }
     }
 
     private void handleResponse(Response response)
     {
-        System.out.println(response.getStatus());
 
     }
 }

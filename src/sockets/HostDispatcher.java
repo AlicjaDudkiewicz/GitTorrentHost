@@ -6,7 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import controllers.HostConnectionHandler;
+import controllers.HostToHostConnectionHandler;
+import controllers.HostToMainServerConnectionHandler;
 import messages.Request;
 import messages.Response;
 import views.MainWindowController;
@@ -43,7 +44,7 @@ public class HostDispatcher
             {
                 System.out.println("I/O error: " + e);
             }
-            new Thread(new HostClientSocketThread(socket)).start();
+            new Thread(new HostToMainServerConnectionHandler(socket)).start();
         }
     }
 
@@ -51,7 +52,7 @@ public class HostDispatcher
     {
         try
         {
-            new Thread(new HostConnectionHandler(ip, port, request)).start();
+            new Thread(new HostToHostConnectionHandler(ip, port, request)).start();
         }
         catch (Exception e)
         {
