@@ -51,6 +51,11 @@
                         <Button mnemonicParsing="false" onAction="#refreshButtonClicked" prefHeight="25.0" prefWidth="177.0" text="Odśwież tabelę plików" />
                      </children>
                   </HBox>
+                  <HBox>
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#openLogs" prefWidth="175.0" text="Uruchom logi w przeglądarce" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                   <ListView fx:id="hostList" prefHeight="200.0" prefWidth="200.0" />
                </children>
             </VBox>

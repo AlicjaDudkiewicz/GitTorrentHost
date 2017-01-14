@@ -7,44 +7,47 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import controllers.HostToHostConnectionHandler;
-import controllers.HostToMainServerConnectionHandler;
+import controllers.HostToHostResponder;
+import controllers.MainServerResponseHandler;
 import messages.Request;
 import messages.Response;
+import model.Host;
+import services.ConfigProvider;
+import tests.Logger;
 import views.MainWindowController;
 
 public class HostDispatcher
 {
-    private Socket clientSocket;
+    private Socket               serverSocket;
     private MainWindowController viewController;
+    private MainServerResponseHandler mainServerResponseHandler;
+    private ObjectOutputStream serverOutputStream;
+    private ObjectInputStream serverInputStream;
+    private ServerSocket internalServerSocket;
+
 
     public HostDispatcher(MainWindowController viewController)
     {
         this.viewController = viewController;
         this.viewController.setDispatcher(this);
+        this.mainServerResponseHandler = new MainServerResponseHandler(viewController);
+        new Thread(this::activateServer).start();
     }
 
-    public void activateServer(int port)
+    public void activateServer()
     {
-        ServerSocket serverSocket = null;
-        Socket socket = null;
-
         try
         {
-            serverSocket = new ServerSocket(port); 
-        } catch (IOException e)
+            internalServerSocket = new ServerSocket(0);
+            while (true)
+            {
+                Socket socket = internalServerSocket.accept();
+                new Thread(new HostToHostResponder(socket)).start();
+            }
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
-        }
-        while (true)
-        {
-            try
-            {
-                socket = serverSocket.accept();
-            } catch (IOException e)
-            {
-                System.out.println("I/O error: " + e);
-            }
-            new Thread(new HostToMainServerConnectionHandler(socket)).start();
         }
     }
 
@@ -60,49 +63,54 @@ public class HostDispatcher
         }
     }
 
-    public void connectToServer(String host, int port)
+    public void connectToServer()
     {
         try
         {
-            clientSocket = new Socket(host, port);
-        } catch (IOException e)
+            serverSocket = new Socket(ConfigProvider.getServerIp(), ConfigProvider.getServerPort());
+            serverOutputStream = new ObjectOutputStream(serverSocket.getOutputStream());
+            serverInputStream = new ObjectInputStream(serverSocket.getInputStream());
+            viewController.updateConnectionStatus("ONLINE");
+        }
+        catch (IOException e)
         {
-            e.printStackTrace();
+            viewController.showConnectErrorWindow();
         }
     }
 
     public void sendRequestToServer(Request request)
     {
-        try
+        if(serverSocket!=null && serverSocket.isConnected())
         {
-            ObjectOutputStream oos = new ObjectOutputStream(
-                    clientSocket.getOutputStream());
-
-            oos.writeObject(request);
-            ObjectInputStream ois = new ObjectInputStream(
-                    clientSocket.getInputStream());
             try
             {
-                Response response = (Response) ois.readObject();
-                System.out.println(response.getStatus());
-            } catch (Exception e)
+                request.setHost(new Host(internalServerSocket.getInetAddress().getHostAddress(), internalServerSocket.getLocalPort()));
+                serverOutputStream.writeObject(request);
+                Logger.logMessage("Request " + request.getClass().getName() + " sent to main server");
+                try
+                {
+                    Response response = (Response) serverInputStream.readObject();
+                    mainServerResponseHandler.serveResponse(response);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
         }
-
     }
 
     public void closeServerConnection()
     {
         try
         {
-            clientSocket.close();
+            serverSocket.close();
         }
-        catch(IOException e)
+        catch (IOException e)
         {
             System.out.println("Connection was already closed");
         }

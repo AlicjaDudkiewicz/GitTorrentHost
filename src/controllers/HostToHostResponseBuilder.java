@@ -9,65 +9,60 @@ import java.util.ArrayList;
 import messages.FilePartRequest;
 import messages.FilePartResponse;
 import model.FileInstance;
+import services.ConfigProvider;
 
-public class ResponseBuilder
+public class HostToHostResponseBuilder
 {
-    public ArrayList<FilePartResponse> buildFilePartResponse(
-            FilePartRequest filePartRequest, String pathToDirectory)
+    public static ArrayList<FilePartResponse> buildFilePartResponse(FilePartRequest filePartRequest)
     {
         ArrayList<FilePartResponse> filePartResponses = new ArrayList<>();
         FileInstance fileInstance = filePartRequest.getFileInstance();
         long partStartByte = filePartRequest.getPartStartByte();
         long partFileSize = filePartRequest.getPartFileSize();
-        long distance = partFileSize;
-        final int BYTE_ARRAY_SIZE = 4096;
+        long distanceToPartEnd = partFileSize;
+        final int BYTE_ARRAY_SIZE = 524288;
 
         String fileName = fileInstance.getName();
 
-        //File fileToSend = new File(pathToDirectory + "/" + fileName);
-        File fileToSend = new File("C:/s.txt");
+        File fileToSend = new File(ConfigProvider.getRootDirectory() + "/" + fileName);
 
         try
         {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(fileToSend,
-                    "r");
-            while (distance > 0)
-            {
+            RandomAccessFile randomAccessFile = new RandomAccessFile(fileToSend, "r");
 
-                FilePartResponse filePartResponse = new FilePartResponse();
-                filePartResponse.setFileInstance(fileInstance);
-                filePartResponse.setStartByte(partStartByte);
+            while (distanceToPartEnd > 0)
+            {
+                FilePartResponse filePartResponse = new FilePartResponse(fileInstance,partStartByte);
 
                 randomAccessFile.seek(partStartByte);
-                if (distance >= BYTE_ARRAY_SIZE)
+                if (distanceToPartEnd >= BYTE_ARRAY_SIZE)
                 {
                     byte[] filePartData = new byte[BYTE_ARRAY_SIZE];
                     try
                     {
-                        randomAccessFile.read(filePartData,
-                                0,
-                                BYTE_ARRAY_SIZE);
-                        distance = distance - BYTE_ARRAY_SIZE;
+                        randomAccessFile.read(filePartData, 0, BYTE_ARRAY_SIZE);
+                        distanceToPartEnd = distanceToPartEnd - BYTE_ARRAY_SIZE;
                         partStartByte = partStartByte + BYTE_ARRAY_SIZE;
-                    } catch (IOException e)
+                    }
+                    catch (IOException e)
                     {
                         e.printStackTrace();
                     }
 
                     filePartResponse.setFilePartData(filePartData);
-                } else
+                }
+                else
                 {
-                    byte[] filePartData = new byte[Math.toIntExact(distance)];
-                    randomAccessFile.read(filePartData,
-                            0,
-                            Math.toIntExact(distance));
-                    distance=0;
+                    byte[] filePartData = new byte[Math.toIntExact(distanceToPartEnd)];
+                    randomAccessFile.read(filePartData, 0, Math.toIntExact(distanceToPartEnd));
+                    distanceToPartEnd = 0;
                     filePartResponse.setFilePartData(filePartData);
                 }
                 filePartResponses.add(filePartResponse);
 
             }
-        } catch (FileNotFoundException e)
+        }
+        catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }

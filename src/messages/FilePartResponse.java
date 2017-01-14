@@ -7,6 +7,13 @@ public class FilePartResponse extends Response
     private byte[] filePartData;
     private FileInstance fileInstance; 
     private long startByte;
+
+    public FilePartResponse( FileInstance fileInstance, long startByte)
+    {
+        this.fileInstance = fileInstance;
+        this.startByte = startByte;
+    }
+
     public long getStartByte()
     {
         return startByte;
